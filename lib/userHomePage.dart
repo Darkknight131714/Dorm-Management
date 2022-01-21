@@ -10,6 +10,7 @@ import 'functions.dart';
 import 'user_issues.dart';
 import 'user_payment.dart';
 import 'user_profile.dart';
+import 'user_notice.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -26,8 +27,8 @@ class _UserHomePageState extends State<UserHomePage> {
 
   List<Widget> pages = [
     FirstScreen(),
+    UserNoticeBoard(),
     UserIssuePage(),
-    UserPaymentPage(),
     Profile(),
   ];
   PageController _pageController = PageController();
@@ -57,12 +58,12 @@ class _UserHomePageState extends State<UserHomePage> {
               label: "Home",
             ),
             const BottomNavigationBarItem(
-              icon: Icon(Icons.error),
-              label: "Issues",
+              icon: Icon(Icons.notifications_none),
+              label: "Notice Board",
             ),
             const BottomNavigationBarItem(
-              icon: Icon(Icons.payment),
-              label: "Payment",
+              icon: Icon(Icons.error),
+              label: "Issues",
             ),
             const BottomNavigationBarItem(
               icon: Icon(Icons.person),

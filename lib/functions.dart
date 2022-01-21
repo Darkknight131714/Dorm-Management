@@ -193,9 +193,6 @@ class Functions {
           val.add(element["Name"].toString());
           val.add(element["Rollno"].toString());
           val.add(element["Room"].toString());
-          val.add(element["Document"].toString());
-          val.add(element["Movein"].toString());
-          val.add(element["Moveout"].toString());
           val.add(element["Email"].toString());
           payment.clear();
           payment.add(element["hostelfee"]);
@@ -526,6 +523,27 @@ class Functions {
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((documentSnapshot) async {
         await documentSnapshot.reference.delete();
+      });
+    });
+  }
+
+  Future addNotice(String notice, String name) async {
+    CollectionReference noticeboard = firestore.collection('noticeboard');
+    await noticeboard.add({
+      'notice': notice,
+      'name': name,
+      'time': Timestamp.now(),
+    });
+  }
+
+  Future startNewSemester() async {
+    await firestore
+        .collection('students')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((documentSnapshot) async {
+        await documentSnapshot.reference
+            .update({'hostelfee': false, 'otherfee': false});
       });
     });
   }

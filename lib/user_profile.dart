@@ -3,15 +3,7 @@ import 'functions.dart';
 
 class Profile extends StatelessWidget {
   @override
-  List<String> lead = [
-    "Name",
-    "Roll Number",
-    "Room Number",
-    "Document",
-    "Move In",
-    "Move Out",
-    "Email"
-  ];
+  List<String> lead = ["Name", "Roll Number", "Room Number", "Email"];
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

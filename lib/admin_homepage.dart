@@ -13,6 +13,7 @@ import 'admin_payment.dart';
 import 'userHomePage.dart';
 import 'user_profile.dart';
 import 'list_admin.dart';
+import 'admin_notice.dart';
 
 class Homepage extends StatefulWidget {
   Homepage({required this.name, required this.hostels});
@@ -34,6 +35,30 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButtonLocation:
+            FloatingActionButtonLocation.miniCenterFloat,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return Column(
+                    children: [
+                      Text("Start New Semester?"),
+                      TextButton(
+                        child: Text("Yes"),
+                        onPressed: () async {
+                          Functions func = Functions();
+                          await func.startNewSemester();
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  );
+                });
+          },
+          child: Icon(Icons.new_label),
+        ),
         drawer: Drawer(
           child: ListView(
             children: [
@@ -57,6 +82,18 @@ class _HomepageState extends State<Homepage> {
                         MaterialPageRoute(
                             builder: (context) =>
                                 Student(studentRecords: studentRecords)));
+                  }),
+              ListTile(
+                  title: const Text("Notice Board"),
+                  onTap: () async {
+                    Functions func = Functions();
+                    studentRecords = await func.studentinfo();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AdminNoticeBoard(),
+                      ),
+                    );
                   }),
               ListTile(
                 title: const Text("Payment"),
