@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:dormitory_management/room_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -152,46 +153,66 @@ class _HomepageState extends State<Homepage> {
               child: ListView.builder(
                 itemCount: widget.hostels.length,
                 itemBuilder: (context, index) {
-                  return Container(
-                    height: 150,
-                    width: 350,
-                    margin: EdgeInsets.symmetric(vertical: 11, horizontal: 20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: Color(0xFF3FC979).withOpacity(0.25),
-                    ),
-                    child: ListTile(
-                      title: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Center(
-                            child: Text(widget.hostels[index][0]),
+                  return StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection(widget.hostels[index][3])
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return CircularProgressIndicator();
+                      } else {
+                        String beds = "";
+                        String available = "";
+                        for (int i = 0; i < snapshot.data!.docs.length; i++) {
+                          if (snapshot.data!.docs[i].id == 'total') {
+                            beds = snapshot.data!.docs[i]['beds'].toString();
+                            available =
+                                snapshot.data!.docs[i]['available'].toString();
+                          }
+                        }
+                        return Container(
+                          height: 150,
+                          width: 350,
+                          margin: EdgeInsets.symmetric(
+                              vertical: 11, horizontal: 20),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Color(0xFF3FC979).withOpacity(0.25),
                           ),
-                          SizedBox(
-                            height: 50,
-                          ),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          child: ListTile(
+                            title: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("Beds : " +
-                                    widget.hostels[index][1].toString()),
-                                Text("available : " +
-                                    widget.hostels[index][2].toString()),
-                              ]),
-                        ],
-                      ),
-                      onTap: () async {
-                        List<Map<String, dynamic>> val =
-                            await functions.roominfo(titl[index]);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                AddRoom(val: val, title: titl[index]),
+                                Center(
+                                  child: Text(widget.hostels[index][0]),
+                                ),
+                                SizedBox(
+                                  height: 50,
+                                ),
+                                Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Beds : " + beds),
+                                      Text("available : " + available),
+                                    ]),
+                              ],
+                            ),
+                            onTap: () async {
+                              List<Map<String, dynamic>> val =
+                                  await functions.roominfo(titl[index]);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      AddRoom(val: val, title: titl[index]),
+                                ),
+                              );
+                            },
                           ),
                         );
-                      },
-                    ),
+                      }
+                    },
                   );
                 },
               ),

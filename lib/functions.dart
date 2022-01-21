@@ -80,13 +80,10 @@ class Functions {
 
         var a = await userData(docRef);
 
-        print(a()["beds"]);
+        print(a()["title"]);
 
-        hostels.add([
-          element["name"],
-          a()["beds"],
-          a()["available"],
-        ]);
+        hostels.add(
+            [element["name"], a()["beds"], a()["available"], a()['title']]);
       }
     });
 
