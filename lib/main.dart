@@ -14,11 +14,15 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       home: const Loginpage(),
       //theme: ThemeData.(),
-      theme: ThemeData.light().copyWith(
-          appBarTheme: AppBarTheme(color: Color(0xFF1DA1F2)),
-          scaffoldBackgroundColor: Color(0xFFE5E5E5),
-          // accentColor: Color(0xFF1DA1F2),
-          canvasColor: Color(0xFFE5E5E5)),
+      theme: ThemeData(
+        brightness: Brightness.light,
+        appBarTheme: AppBarTheme(
+          color: Color(0xFF1DA1F2),
+        ),
+        scaffoldBackgroundColor: Color(0xFFE5E5E5),
+        // accentColor: Color(0xFF1DA1F2),
+        canvasColor: Color(0xFFE5E5E5),
+      ),
     );
   }
 }

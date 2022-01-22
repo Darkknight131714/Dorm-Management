@@ -10,6 +10,7 @@ import 'admin_payment.dart';
 import 'user_profile.dart';
 import 'list_admin.dart';
 import 'admin_notice.dart';
+import 'admin_profile.dart';
 
 class Homepage extends StatefulWidget {
   Homepage({required this.name, required this.hostels});
@@ -31,27 +32,29 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButtonLocation:
-            FloatingActionButtonLocation.miniCenterFloat,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            showModalBottomSheet(
-                context: context,
-                builder: (context) {
-                  return Column(
-                    children: [
-                      Text("Start New Semester?"),
-                      TextButton(
-                        child: Text("Yes"),
-                        onPressed: () async {
-                          Functions func = Functions();
-                          await func.startNewSemester();
-                          Navigator.pop(context);
-                        },
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text("Start New Semester?"),
+                  actions: [
+                    ElevatedButton(
+                      child: Text(
+                        "Yes",
+                        style: TextStyle(fontSize: 15),
                       ),
-                    ],
-                  );
-                });
+                      onPressed: () async {
+                        Functions func = Functions();
+                        await func.startNewSemester();
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
           },
           child: Icon(Icons.new_label),
         ),
@@ -59,8 +62,22 @@ class _HomepageState extends State<Homepage> {
           child: ListView(
             children: [
               DrawerHeader(
-                child: Text(widget.name),
-                decoration: BoxDecoration(color: Color(0xFF3FC979)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      widget.name,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
+                decoration: BoxDecoration(color: Color(0xFF1DA1F2)),
               ),
               ListTile(
                 title: const Text("Dormitory View"),
@@ -140,7 +157,7 @@ class _HomepageState extends State<Homepage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Profile(),
+                      builder: (context) => AdminProfile(),
                     ),
                   );
                 },
@@ -210,7 +227,7 @@ class _HomepageState extends State<Homepage> {
                               vertical: 11, horizontal: 20),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
-                            color: Color(0xFF3FC979).withOpacity(0.25),
+                            color: Color(0xFF1DA1F2).withOpacity(0.25),
                           ),
                           child: ListTile(
                             title: Column(

@@ -3,9 +3,31 @@ import 'package:flutter/material.dart';
 import 'functions.dart';
 import 'user_payment.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  @override
+  void initState() {
+    bool flag = val[2] != "";
+    super.initState();
+    if (flag == true) {
+      hostel = val[2][0] + val[2][1] + val[2][2];
+      for (int i = 4; i < val[2].length; i++) {
+        room = room + val[2][i];
+      }
+    } else {
+      hostel = "NA";
+      room = "NA";
+    }
+  }
+
+  String room = "", hostel = "";
   List<String> lead = ["Name", "Roll Number", "Room Number", "Email"];
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -40,22 +62,68 @@ class Profile extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
-            flex: 2,
-            child: Container(
-              child: ListView.builder(
-                  itemCount: val.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 0, horizontal: 20),
-                      child: ListTile(
-                        leading: Text(lead[index] + ": "),
-                        title: Text(val[index]),
-                      ),
-                    );
-                  }),
+          Container(
+            padding: EdgeInsets.all(20),
+            child: Table(
+              border: TableBorder.all(),
+              children: [
+                TableRow(children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(lead[0]),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(val[0]),
+                  ),
+                ]),
+                TableRow(children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(lead[1]),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(val[1]),
+                  ),
+                ]),
+                TableRow(children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Hostel"),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(hostel.toUpperCase()),
+                  ),
+                ]),
+                TableRow(children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Room"),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(room),
+                  ),
+                ]),
+              ],
             ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text("Attendance History"),
+              ),
+            ],
+          ),
+          Divider(
+            color: Colors.black,
+            thickness: 0.5,
+            endIndent: 15,
+            indent: 15,
           ),
           StreamBuilder<QuerySnapshot>(
             stream:
@@ -75,8 +143,18 @@ class Profile extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: history.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(history[index]),
+                      return Column(
+                        children: [
+                          ListTile(
+                            title: Text(history[index]),
+                          ),
+                          Divider(
+                            color: Colors.black,
+                            thickness: 0.5,
+                            endIndent: 15,
+                            indent: 15,
+                          )
+                        ],
                       );
                     },
                   ),

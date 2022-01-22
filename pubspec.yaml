@@ -26,7 +26,8 @@ dependencies:
   open_file: ^3.2.1
   razorpay_flutter: ^1.2.9
   geolocator: ^8.0.3
-
+  google_fonts: ^2.2.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

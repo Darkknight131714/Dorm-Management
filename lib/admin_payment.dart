@@ -29,7 +29,7 @@ class _AdminPaymentPageState extends State<AdminPaymentPage> {
                 margin: EdgeInsets.symmetric(vertical: 11, horizontal: 20),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Color(0xFF3FC979),
+                  color: Color(0xFF1DA1F2),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -75,12 +75,12 @@ class _AdminPaymentPageState extends State<AdminPaymentPage> {
                 itemCount: widget.values.length,
                 itemBuilder: (BuildContext context, index) {
                   return Container(
-                    height: 60,
+                    height: 100,
                     width: 400,
                     margin: EdgeInsets.symmetric(vertical: 11, horizontal: 20),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Color(0xFF3FC979).withOpacity(0.25),
+                      color: Color(0xFF1DA1F2).withOpacity(0.25),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -92,8 +92,16 @@ class _AdminPaymentPageState extends State<AdminPaymentPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(widget.values[index][0]),
-                              Text(widget.values[index][1]),
+                              Container(
+                                constraints: BoxConstraints(
+                                    minWidth: 100, maxWidth: 100),
+                                child: Text(
+                                  widget.values[index][0],
+                                ),
+                              ),
+                              Text(widget.values[index][1]
+                                  .toString()
+                                  .toUpperCase()),
                             ],
                           ),
                         ),

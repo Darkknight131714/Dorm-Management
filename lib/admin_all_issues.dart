@@ -1,39 +1,22 @@
 import 'package:flutter/material.dart';
 import 'functions.dart';
-import 'admin_all_issues.dart';
 
-class AdminIssuePage extends StatefulWidget {
+class AdminAllIssuePage extends StatefulWidget {
   List<List<dynamic>> values;
-  AdminIssuePage({required this.values});
+  AdminAllIssuePage({required this.values});
 
   @override
   _AdminIssuePageState createState() => _AdminIssuePageState();
 }
 
-class _AdminIssuePageState extends State<AdminIssuePage> {
+class _AdminIssuePageState extends State<AdminAllIssuePage> {
   Functions functions = Functions();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Issues"),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              List<List<dynamic>> values = await functions.adminIssuesAll();
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AdminAllIssuePage(
-                    values: values,
-                  ),
-                ),
-              );
-            },
-            icon: Icon(Icons.all_inbox),
-          ),
-        ],
+        title: Text("All Issues"),
       ),
       body: ListView.builder(
           itemCount: widget.values.length,
@@ -75,16 +58,14 @@ class _AdminIssuePageState extends State<AdminIssuePage> {
                       ),
                       Expanded(
                         flex: 1,
-                        child: TextButton(
-                          onPressed: () async {
-                            await functions.markResolved(
-                                widget.values[index][3],
-                                widget.values[index][0]);
-                            widget.values.clear();
-                            widget.values = await functions.adminIssues();
-                            setState(() {});
-                          },
-                          child: Text("Mark as Resolved"),
+                        child: Text(
+                          widget.values[index][2] ? "Resolved" : "Not Resolved",
+                          style: TextStyle(
+                              color: widget.values[index][2]
+                                  ? Color(0xFF1DA1F2)
+                                  : Colors.red,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 20),
                         ),
                       ),
                     ]),

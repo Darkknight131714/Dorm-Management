@@ -82,6 +82,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   dist = Geolocator.distanceBetween(
                           position.latitude, position.longitude, 25.43, 81.77)
                       .toInt();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      backgroundColor: Color(0xFF1DA1F2),
+                      behavior: SnackBarBehavior.floating,
+                      content: Text(
+                        "Location Received",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  );
                 },
               ),
             ),

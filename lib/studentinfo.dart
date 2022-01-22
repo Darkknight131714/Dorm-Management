@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'functions.dart';
 
 class StudentInfo extends StatefulWidget {
   List<String> val = [];
@@ -12,6 +13,20 @@ class StudentInfo extends StatefulWidget {
 
 class _StudentInfoState extends State<StudentInfo> {
   String hostel = 'NA';
+  String hostell = "", room = "";
+  @override
+  void initState() {
+    super.initState();
+    if (val[2] != "") {
+      hostel = val[2][0] + val[2][1] + val[2][2];
+      for (int i = 4; i < val[2].length; i++) {
+        room = room + val[2][i];
+      }
+    } else {
+      hostel = "NA";
+      room = "NA";
+    }
+  }
 
   Future<void> _showMyDialog() async {
     return showDialog<void>(
@@ -64,11 +79,11 @@ class _StudentInfoState extends State<StudentInfo> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> val = widget.val;
+    List<String> value = widget.val;
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xFF3FC979),
+        backgroundColor: Color(0xFF1DA1F2),
         onPressed: () {
           _showMyDialog();
         },
@@ -102,69 +117,64 @@ class _StudentInfoState extends State<StudentInfo> {
                         ),
                         Container(
                           decoration: BoxDecoration(
-                            color: Color(0xFF3FC979).withOpacity(0.5),
+                            color: Color(0xFF1DA1F2).withOpacity(0.5),
                             borderRadius: BorderRadius.all(
                               Radius.circular(30),
                             ),
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            child: Column(
                               children: [
+                                SizedBox(height: 70),
                                 Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                  padding: const EdgeInsets.all(25.0),
+                                  child: Table(
+                                    border: TableBorder.all(),
                                     children: [
-                                      SizedBox(
-                                        height: 80,
-                                      ),
-                                      Text("Name"),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text("Roll Number"),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text("Room Number"),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text("Email")
+                                      TableRow(children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text("Name"),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(val[0]),
+                                        ),
+                                      ]),
+                                      TableRow(children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text("Roll No."),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(val[1]),
+                                        ),
+                                      ]),
+                                      TableRow(children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text("Hostel"),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(hostel.toUpperCase()),
+                                        ),
+                                      ]),
+                                      TableRow(children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text("Room"),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(room),
+                                        ),
+                                      ]),
                                     ],
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        height: 80,
-                                      ),
-                                      Text(val[0]),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(val[1]),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(val[2]),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(val[3]),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                    ],
-                                  ),
-                                )
                               ],
                             ),
                           ),
@@ -198,7 +208,7 @@ class _StudentInfoState extends State<StudentInfo> {
                 } else {
                   List<dynamic> history = [];
                   for (int i = 0; i < snapshot.data!.docs.length; i++) {
-                    if (snapshot.data!.docs[i]['Email'] == val[3]) {
+                    if (snapshot.data!.docs[i]['Email'] == value[3]) {
                       history = snapshot.data!.docs[i]['history'];
                       break;
                     }

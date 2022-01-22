@@ -653,4 +653,49 @@ class Functions {
     });
     return ans;
   }
+
+  Future<List<List<dynamic>>> adminIssuesAll() async {
+    List<List<dynamic>> ans = [];
+    int index = 0;
+    await firestore
+        .collection('issues')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((documentSnapshot) {
+        ans.add([]);
+        ans[index].add(documentSnapshot["issue"]);
+        ans[index].add(documentSnapshot["name"]);
+        ans[index].add(documentSnapshot["resolved"]);
+        ans[index].add(documentSnapshot["rollno"]);
+        index++;
+      });
+    });
+    return ans;
+  }
+
+  Future createNewChat(String email) async {
+    bool flag = false;
+    await firestore
+        .collection('chats')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((documentSnapshot) {
+        if (documentSnapshot['email'] == email) {
+          flag = true;
+        }
+      });
+    });
+    if (!flag) {
+      await firestore.collection('chats').add({
+        'email': email,
+        'name': val[0],
+      });
+    }
+  }
+
+  Future sendMessage(String email, String sender, String msg) async {
+    await firestore
+        .collection(email)
+        .add({"sender": sender, "msg": msg, "time": Timestamp.now()});
+  }
 }

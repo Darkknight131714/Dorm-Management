@@ -146,7 +146,7 @@ class _UserPaymentPageState extends State<UserPaymentPage> {
               padding: const EdgeInsets.all(20.0),
               child: Container(
                 decoration: BoxDecoration(
-                    color: Color(0xFF3FC979).withOpacity(0.25),
+                    color: Color(0xFF1DA1F2).withOpacity(0.25),
                     borderRadius: BorderRadius.circular(20)),
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -172,7 +172,8 @@ class _UserPaymentPageState extends State<UserPaymentPage> {
                         },
                         child: Text("Pay Hostel Fee"),
                         style: ElevatedButton.styleFrom(
-                            primary: Color(0xFF3FC979)),
+                          primary: Color(0xFF1DA1F2),
+                        ),
                       )
                     ],
                   ),
@@ -185,14 +186,14 @@ class _UserPaymentPageState extends State<UserPaymentPage> {
               padding: const EdgeInsets.all(20.0),
               child: Container(
                 decoration: BoxDecoration(
-                    color: Color(0xFF3FC979).withOpacity(0.25),
+                    color: Color(0xFF1DA1F2).withOpacity(0.25),
                     borderRadius: BorderRadius.circular(20)),
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(   
+                      Text(
                         "Mess Fees",
                         style: TextStyle(fontSize: 20),
                       ),
@@ -211,7 +212,8 @@ class _UserPaymentPageState extends State<UserPaymentPage> {
                         },
                         child: Text("Pay Other Fee"),
                         style: ElevatedButton.styleFrom(
-                            primary: Color(0xFF3FC979)),
+                          primary: Color(0xFF1DA1F2),
+                        ),
                       )
                     ],
                   ),

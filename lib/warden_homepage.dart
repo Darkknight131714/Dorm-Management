@@ -10,6 +10,8 @@ import 'admin_payment.dart';
 import 'user_profile.dart';
 import 'list_admin.dart';
 import 'admin_notice.dart';
+import 'admin_profile.dart';
+import 'warden_chat_list.dart';
 
 class WardenHomePage extends StatefulWidget {
   WardenHomePage(
@@ -37,8 +39,22 @@ class _HomepageState extends State<WardenHomePage> {
           child: ListView(
             children: [
               DrawerHeader(
-                child: Text(widget.name),
-                decoration: BoxDecoration(color: Color(0xFF3FC979)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Warden",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
+                decoration: BoxDecoration(color: Color(0xFF1DA1F2)),
               ),
               ListTile(
                 title: const Text("Dormitory View"),
@@ -118,13 +134,24 @@ class _HomepageState extends State<WardenHomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Profile(),
+                      builder: (context) => AdminProfile(),
                     ),
                   );
                 },
               ),
             ],
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChatListPage(),
+              ),
+            );
+          },
+          child: Icon(Icons.chat),
         ),
         appBar: AppBar(
           actions: [
@@ -176,7 +203,7 @@ class _HomepageState extends State<WardenHomePage> {
                               vertical: 11, horizontal: 20),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
-                            color: Color(0xFF3FC979).withOpacity(0.25),
+                            color: Color(0xFF1DA1F2).withOpacity(0.25),
                           ),
                           child: ListTile(
                             title: Column(

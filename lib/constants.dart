@@ -18,3 +18,6 @@ const ktextfield = InputDecoration(
     borderRadius: BorderRadius.all(Radius.circular(32.0)),
   ),
 );
+TextStyle kProfile = const TextStyle(
+  fontSize: 20,
+);

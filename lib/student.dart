@@ -92,7 +92,7 @@ class _StudentState extends State<Student> {
                   padding: const EdgeInsets.all(13.0),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Color(0xFF3FC979).withOpacity(0.25),
+                      color: Color(0xFF1DA1F2).withOpacity(0.25),
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),
                     child: ListTile(
@@ -135,7 +135,12 @@ class _StudentState extends State<Student> {
                                     "Remove Room",
                                     style: TextStyle(color: Colors.red),
                                   )
-                                : const Text("Allot Room"),
+                                : const Text(
+                                    "Allot Room",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w800),
+                                  ),
                           )
                         ],
                       ),

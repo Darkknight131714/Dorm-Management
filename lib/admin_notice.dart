@@ -76,9 +76,36 @@ class _AdminNoticeBoardState extends State<AdminNoticeBoard> {
             return ListView.builder(
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(snapshot.data!.docs[index]['notice']),
-                  leading: Text(snapshot.data!.docs[index]['name']),
+                return Column(
+                  children: [
+                    SizedBox(
+                      height: 8,
+                    ),
+                    ListTile(
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          snapshot.data!.docs[index]['notice'],
+                          style: TextStyle(
+                              color: Color(0xff545454),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                      title: Text(
+                        "Warden: " + snapshot.data!.docs[index]['name'],
+                        style: TextStyle(
+                            color: Color(0xff545454),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800),
+                      ),
+                    ),
+                    Divider(
+                      thickness: 2,
+                      indent: 5,
+                      endIndent: 5,
+                    )
+                  ],
                 );
               },
             );
