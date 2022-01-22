@@ -1,6 +1,5 @@
 # [UnScript Rookie’s Hackathon 2k22](https://unscript-rookies.netlify.app/)
 [![image](https://user-images.githubusercontent.com/76626284/150655704-2a18d777-c805-46e1-bcb9-87c4e3dffb24.png)](https://unscript-rookies.netlify.app/)
-
 Team: **Depression** <br />
 Team Members: [Gautam](https://github.com/Darkknight131714), [Shantanu](https://github.com/underoot-iota), [Ambikesh](https://github.com/AmbikeshArman), [Shivansh](https://github.com/shivansh2741)
 
