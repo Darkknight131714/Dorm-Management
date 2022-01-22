@@ -33,30 +33,6 @@ class _HomepageState extends State<WardenHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButtonLocation:
-            FloatingActionButtonLocation.miniCenterFloat,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            showModalBottomSheet(
-                context: context,
-                builder: (context) {
-                  return Column(
-                    children: [
-                      Text("Start New Semester?"),
-                      TextButton(
-                        child: Text("Yes"),
-                        onPressed: () async {
-                          Functions func = Functions();
-                          await func.startNewSemester();
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
-                  );
-                });
-          },
-          child: Icon(Icons.new_label),
-        ),
         drawer: Drawer(
           child: ListView(
             children: [
@@ -126,7 +102,7 @@ class _HomepageState extends State<WardenHomePage> {
                 title: const Text("Report Retrieval"),
                 onTap: () async {
                   Functions func = Functions();
-                  studentRecords = await func.studentinfo();
+                  studentRecords = await func.Wardenstudentinfo(widget.title);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -143,18 +119,6 @@ class _HomepageState extends State<WardenHomePage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => Profile(),
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                title: Text("Admins"),
-                onTap: () async {
-                  List<List<String>> admins = await functions.getAdmins();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ListAdmin(admins: admins),
                     ),
                   );
                 },
