@@ -126,8 +126,12 @@ class Functions {
     Map<String, List<String>> studentRecords = {};
 
     CollectionReference students = firestore.collection('students');
-    await students.get().then((QuerySnapshot querySnapshot) {
+    await students
+        .orderBy('distance', descending: true)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
       for (var element in querySnapshot.docs) {
+        print(element["Name"] + ": " + element["distance"].toString());
         studentRecords[element["Rollno"].toString()] = [
           element["Name"].toString(),
           element["Rollno"].toString(),
@@ -604,7 +608,10 @@ class Functions {
 
     CollectionReference students = firestore.collection('students');
 
-    await students.get().then((QuerySnapshot querySnapshot) {
+    await students
+        .orderBy('distance', descending: true)
+        .get()
+        .then((QuerySnapshot querySnapshot) async {
       for (var element in querySnapshot.docs) {
         String room = "";
         room = element['Room'];

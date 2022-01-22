@@ -12,6 +12,7 @@ import 'user_issues.dart';
 import 'user_payment.dart';
 import 'user_profile.dart';
 import 'user_notice.dart';
+import 'package:geolocator/geolocator.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -132,8 +133,28 @@ class FirstScreen extends StatelessWidget {
                   } else {
                     return TextButton(
                       onPressed: () async {
-                        Functions func = Functions();
-                        await func.punchInorOur(isInHostel);
+                        LocationPermission permission;
+                        permission = await Geolocator.requestPermission();
+                        Position position =
+                            await Geolocator.getCurrentPosition();
+                        int dist = Geolocator.distanceBetween(position.latitude,
+                                position.longitude, 25.43, 81.77)
+                            .toInt();
+                        if (dist > 300) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              backgroundColor: Colors.blueGrey,
+                              behavior: SnackBarBehavior.floating,
+                              content: Text(
+                                "You are not near Hostel",
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            ),
+                          );
+                        } else {
+                          Functions func = Functions();
+                          await func.punchInorOur(isInHostel);
+                        }
                       },
                       child: Text("Punch In"),
                     );

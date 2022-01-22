@@ -7,6 +7,7 @@ import 'userHomePage.dart';
 import 'loginpage.dart';
 import 'constants.dart';
 import 'admin_homepage.dart';
+import 'package:geolocator/geolocator.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -19,6 +20,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   late String name, Rollno, room, email, pass;
   Functions functions = Functions();
+  late Position position;
+  int dist = 0;
   Widget build(BuildContext context) {
     Firebase.initializeApp();
     final _firestore = FirebaseFirestore.instance;
@@ -71,6 +74,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: ElevatedButton(
+                child: Text("Get Location"),
+                onPressed: () async {
+                  LocationPermission permission;
+                  permission = await Geolocator.requestPermission();
+                  position = await Geolocator.getCurrentPosition();
+                  dist = Geolocator.distanceBetween(
+                          position.latitude, position.longitude, 25.43, 81.77)
+                      .toInt();
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     primary: Color(0xFF3FC979),
                     shape: RoundedRectangleBorder(
@@ -78,63 +95,77 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     minimumSize: Size(350, 42)),
                 onPressed: () async {
-                  bool val1 = await functions.register(email, pass);
-                  if (val1) {
-                    _firestore.collection("students").add({
-                      "Name": name,
-                      "Rollno": Rollno,
-                      "Room": "",
-                      "Email": email,
-                      "hostelfee": false,
-                      "otherfee": false,
-                      "isinhostel": false,
-                      "history": [],
-                    });
-                    _firestore.collection("uid").add({
-                      "email": email,
-                      "password": pass,
-                    });
-                    val.clear();
-                    val.add(name);
-                    val.add(Rollno);
-                    val.add("");
-                    val.add(email);
-                    func_issues.clear();
-                    issues_resolved.clear();
-                    payment.clear();
-                    payment.add(false);
-                    payment.add(false);
-                    await functions.userIssue(val[1]);
-                    String flag = await functions.userpower();
-                    if (flag != "") {
-                      List<List<dynamic>> hostels = await functions.hostels();
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Homepage(
-                            name: name,
-                            hostels: hostels,
+                  if (dist != 0) {
+                    bool val1 = await functions.register(email, pass);
+                    if (val1) {
+                      _firestore.collection("students").add({
+                        "Name": name,
+                        "Rollno": Rollno,
+                        "Room": "",
+                        "Email": email,
+                        "hostelfee": false,
+                        "otherfee": false,
+                        "isinhostel": false,
+                        "history": [],
+                        "distance": dist,
+                      });
+                      _firestore.collection("uid").add({
+                        "email": email,
+                        "password": pass,
+                      });
+                      val.clear();
+                      val.add(name);
+                      val.add(Rollno);
+                      val.add("");
+                      val.add(email);
+                      func_issues.clear();
+                      issues_resolved.clear();
+                      payment.clear();
+                      payment.add(false);
+                      payment.add(false);
+                      await functions.userIssue(val[1]);
+                      String flag = await functions.userpower();
+                      if (flag != "") {
+                        List<List<dynamic>> hostels = await functions.hostels();
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Homepage(
+                              name: name,
+                              hostels: hostels,
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      } else {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UserHomePage(),
+                          ),
+                        );
+                      }
                     } else {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => UserHomePage(),
+                      const snackbar = SnackBar(
+                        backgroundColor: Colors.blueGrey,
+                        behavior: SnackBarBehavior.floating,
+                        content: Text(
+                          "Incorrect User Credentials",
+                          style: TextStyle(color: Colors.red),
                         ),
                       );
+                      ScaffoldMessenger.of(context).showSnackBar(snackbar);
                     }
                   } else {
-                    const snackbar = SnackBar(
-                      backgroundColor: Colors.blueGrey,
-                      behavior: SnackBarBehavior.floating,
-                      content: Text(
-                        "Incorrect User Credentials",
-                        style: TextStyle(color: Colors.red),
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Colors.blueGrey,
+                        behavior: SnackBarBehavior.floating,
+                        content: Text(
+                          "Please Get Location",
+                          style: TextStyle(color: Colors.red),
+                        ),
                       ),
                     );
-                    ScaffoldMessenger.of(context).showSnackBar(snackbar);
                   }
                 },
                 child: const Text("Register"),
