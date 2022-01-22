@@ -147,7 +147,9 @@ class _HomepageState extends State<WardenHomePage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ChatListPage(),
+                builder: (context) => ChatListPage(
+                  title: widget.title,
+                ),
               ),
             );
           },

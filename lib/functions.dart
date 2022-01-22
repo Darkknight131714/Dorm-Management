@@ -248,6 +248,17 @@ class Functions {
         });
       });
     });
+    await firestore
+        .collection('chats')
+        .where('email', isEqualTo: studentinfo[3])
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((documentSnapshot) {
+        documentSnapshot.reference.update({
+          "hostel": hostelname,
+        });
+      });
+    });
   }
 
   Future removeRoom(List<String> studentinfo) async {
@@ -287,6 +298,17 @@ class Functions {
           "beds": documentSnapshot["beds"],
           "number": room,
           "students": FieldValue.arrayRemove([studentinfo[1]])
+        });
+      });
+    });
+    await firestore
+        .collection('chats')
+        .where('email', isEqualTo: studentinfo[3])
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((documentSnapshot) {
+        documentSnapshot.reference.update({
+          "hostel": "NA",
         });
       });
     });
@@ -616,7 +638,12 @@ class Functions {
         String room = "";
         room = element['Room'];
         if (room == "") {
-          continue;
+          studentRecords[element["Rollno"].toString()] = [
+            element["Name"].toString(),
+            element["Rollno"].toString(),
+            element["Room"].toString(),
+            element["Email"].toString(),
+          ];
         } else if (room[0] + room[1] + room[2] == hostel) {
           print(element["Name"]);
           studentRecords[element["Rollno"].toString()] = [

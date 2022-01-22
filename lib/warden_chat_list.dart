@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatListPage extends StatefulWidget {
-  const ChatListPage({Key? key}) : super(key: key);
+  String title;
+  ChatListPage({required this.title});
 
   @override
   _ChatListPageState createState() => _ChatListPageState();
@@ -17,7 +18,10 @@ class _ChatListPageState extends State<ChatListPage> {
         title: Text("Chat List"),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection("chats").snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection("chats")
+            .where('hostel', isEqualTo: widget.title)
+            .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return CircularProgressIndicator();
