@@ -1,5 +1,6 @@
 // ignore_for_file: file_names, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dormitory_management/dorm_details.dart';
 import 'package:flutter/material.dart';
 import 'package:cupertino_icons/cupertino_icons.dart';
@@ -106,6 +107,40 @@ class FirstScreen extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
+            StreamBuilder<QuerySnapshot>(
+              stream:
+                  FirebaseFirestore.instance.collection('students').snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return CircularProgressIndicator();
+                } else {
+                  bool isInHostel = false;
+                  for (int i = 0; i < snapshot.data!.docs.length; i++) {
+                    if (snapshot.data!.docs[i]['Email'] == val[3]) {
+                      isInHostel = snapshot.data!.docs[i]['isinhostel'];
+                      break;
+                    }
+                  }
+                  if (isInHostel) {
+                    return TextButton(
+                      child: Text("Punch Out"),
+                      onPressed: () async {
+                        Functions func = Functions();
+                        await func.punchInorOur(isInHostel);
+                      },
+                    );
+                  } else {
+                    return TextButton(
+                      onPressed: () async {
+                        Functions func = Functions();
+                        await func.punchInorOur(isInHostel);
+                      },
+                      child: Text("Punch In"),
+                    );
+                  }
+                }
+              },
+            ),
             Expanded(
               flex: 1,
               child: ClipRRect(

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'functions.dart';
 
@@ -10,6 +11,7 @@ class Profile extends StatelessWidget {
         title: Text("Profile"),
       ),
       body: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Expanded(
             flex: 1,
@@ -41,6 +43,33 @@ class Profile extends StatelessWidget {
                   }),
             ),
           ),
+          StreamBuilder<QuerySnapshot>(
+            stream:
+                FirebaseFirestore.instance.collection('students').snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return CircularProgressIndicator();
+              } else {
+                List<dynamic> history = [];
+                for (int i = 0; i < snapshot.data!.docs.length; i++) {
+                  if (snapshot.data!.docs[i]['Email'] == val[3]) {
+                    history = snapshot.data!.docs[i]['history'];
+                    break;
+                  }
+                }
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: history.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(history[index]),
+                      );
+                    },
+                  ),
+                );
+              }
+            },
+          )
         ],
       ),
     );

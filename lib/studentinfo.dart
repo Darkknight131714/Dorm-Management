@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class StudentInfo extends StatefulWidget {
@@ -66,151 +67,158 @@ class _StudentInfoState extends State<StudentInfo> {
     List<String> val = widget.val;
 
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Color(0xFF3FC979),
-          onPressed: () {
-            _showMyDialog();
-          },
-          child: const Icon(Icons.edit),
-        ),
-        appBar: AppBar(
-          title: const Text("Student Info"),
-        ),
-        body: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              children: [
-                SizedBox(height: 100),
-                Container(
-                  child: Stack(
-                    children: [
-                      Align(
-                          alignment: Alignment.center,
-                          child: Column(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(30),
-                                  ),
-                                ),
-                                child: SizedBox(
-                                  height: 80,
-                                ),
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Color(0xFF3FC979).withOpacity(0.5),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(30),
-                                  ),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFF3FC979),
+        onPressed: () {
+          _showMyDialog();
+        },
+        child: const Icon(Icons.edit),
+      ),
+      appBar: AppBar(
+        title: const Text("Student Info"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          children: [
+            SizedBox(height: 100),
+            Container(
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(30),
+                            ),
+                          ),
+                          child: SizedBox(
+                            height: 80,
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Color(0xFF3FC979).withOpacity(0.5),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(30),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(20.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              height: 80,
-                                            ),
-                                            Text("Name"),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text("Roll Number"),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text("Room Number"),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text("Document"),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text("Move In"),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text("Move Out"),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text("Email")
-                                          ],
-                                        ),
+                                      SizedBox(
+                                        height: 80,
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(20.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              height: 80,
-                                            ),
-                                            Text(val[0]),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text(val[1]),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text(val[2]),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text(val[3]),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text(val[4]),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text(val[5]),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text(val[6]),
-                                          ],
-                                        ),
-                                      )
+                                      Text("Name"),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text("Roll Number"),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text("Room Number"),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text("Email")
                                     ],
                                   ),
                                 ),
-                              ),
-                            ],
-                          )),
-                      Align(
-                        alignment: Alignment.topCenter,
-                        child: CircleAvatar(
-                          child: Container(
-                            decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image:
-                                        AssetImage("assets/images/iiita.jpg"))),
+                                Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: 80,
+                                      ),
+                                      Text(val[0]),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(val[1]),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(val[2]),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(val[3]),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                          radius: 80,
-                          backgroundColor: Colors.green,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            )));
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: CircleAvatar(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                                fit: BoxFit.fill,
+                                image: AssetImage("assets/images/iiita.jpg"))),
+                      ),
+                      radius: 80,
+                      backgroundColor: Colors.green,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            StreamBuilder<QuerySnapshot>(
+              stream:
+                  FirebaseFirestore.instance.collection('students').snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return CircularProgressIndicator();
+                } else {
+                  List<dynamic> history = [];
+                  for (int i = 0; i < snapshot.data!.docs.length; i++) {
+                    if (snapshot.data!.docs[i]['Email'] == val[3]) {
+                      history = snapshot.data!.docs[i]['history'];
+                      break;
+                    }
+                  }
+                  return Expanded(
+                    child: ListView.builder(
+                      itemCount: history.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(history[index]),
+                        );
+                      },
+                    ),
+                  );
+                }
+              },
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

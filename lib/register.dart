@@ -108,6 +108,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       "Email": email,
                       "hostelfee": false,
                       "otherfee": false,
+                      "isinhostel": false,
+                      "history": [],
                     });
                     _firestore.collection("uid").add({
                       "email": email,

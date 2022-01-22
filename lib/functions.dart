@@ -121,9 +121,6 @@ class Functions {
           element["Name"].toString(),
           element["Rollno"].toString(),
           element["Room"].toString(),
-          element["Document"].toString(),
-          element["Movein"].toString(),
-          element["Moveout"].toString(),
           element["Email"].toString(),
         ];
       }
@@ -544,6 +541,31 @@ class Functions {
       querySnapshot.docs.forEach((documentSnapshot) async {
         await documentSnapshot.reference
             .update({'hostelfee': false, 'otherfee': false});
+      });
+    });
+  }
+
+  Future punchInorOur(bool flag) async {
+    flag = !flag;
+    String ans;
+    if (flag) {
+      ans = "Came to Hostel at " + TimeOfDay.now().toString();
+    } else {
+      ans = "Went from Hostel at " + TimeOfDay.now().toString();
+    }
+
+    await firestore
+        .collection('students')
+        .where('Email', isEqualTo: val[3])
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((documentSnapshot) async {
+        List<dynamic> history = documentSnapshot['history'];
+        history.add(ans);
+        await documentSnapshot.reference.update({
+          "isinhostel": flag,
+          "history": history,
+        });
       });
     });
   }
