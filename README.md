@@ -7,8 +7,8 @@ Team Members: [Gautam](https://github.com/Darkknight131714), [Shantanu](https://
 #### <ins>Problem Statement</ins>
 [Android App Development: Hostel Management System](https://drive.google.com/file/d/1jsXJSSJldK6UWoy37u19vieMMOC6ZcoR/view?usp=sharing)
 
-## Getting Started
 
+## Getting Started
 This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
