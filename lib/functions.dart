@@ -316,9 +316,6 @@ class Functions {
                   pw.Text("Roll Number: " + documentSnapshot["Rollno"]),
                   pw.Text("Room: " + documentSnapshot["Room"]),
                   pw.Text("Email: " + documentSnapshot["Email"]),
-                  pw.Text("Document: " + documentSnapshot["Document"]),
-                  pw.Text("Move In Date: " + documentSnapshot["Movein"]),
-                  pw.Text("Move Out Date: " + documentSnapshot["Moveout"]),
                   pw.Text("Hostel Fee Status: " + hostelfee),
                   pw.Text("Other Fee Status: " + otherfee),
                   pw.Column(children: issues),
@@ -549,9 +546,9 @@ class Functions {
     flag = !flag;
     String ans;
     if (flag) {
-      ans = "Came to Hostel at " + TimeOfDay.now().toString();
+      ans = "Came to Hostel at " + Timestamp.now().toDate().toString();
     } else {
-      ans = "Went from Hostel at " + TimeOfDay.now().toString();
+      ans = "Went from Hostel at " + Timestamp.now().toDate().toString();
     }
 
     await firestore

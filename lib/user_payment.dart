@@ -192,7 +192,7 @@ class _UserPaymentPageState extends State<UserPaymentPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      Text(   
                         "Mess Fees",
                         style: TextStyle(fontSize: 20),
                       ),
