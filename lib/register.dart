@@ -17,7 +17,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   @override
-  late String movein, moveout, name, Rollno, room, email, pass;
+  late String name, Rollno, room, email, pass;
   Functions functions = Functions();
   Widget build(BuildContext context) {
     Firebase.initializeApp();
@@ -44,24 +44,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 decoration: ktextfield.copyWith(hintText: "Roll Number"),
                 onChanged: (String value) {
                   Rollno = value;
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: TextField(
-                decoration: ktextfield.copyWith(hintText: "Move In"),
-                onChanged: (String value) {
-                  movein = value;
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: TextField(
-                decoration: ktextfield.copyWith(hintText: "Move Out"),
-                onChanged: (String value) {
-                  moveout = value;
                 },
               ),
             ),
@@ -102,9 +84,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       "Name": name,
                       "Rollno": Rollno,
                       "Room": "",
-                      "Movein": movein,
-                      "Moveout": moveout,
-                      "Document": "Aadhar",
                       "Email": email,
                       "hostelfee": false,
                       "otherfee": false,
@@ -119,9 +98,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     val.add(name);
                     val.add(Rollno);
                     val.add("");
-                    val.add("Aadhar");
-                    val.add(movein);
-                    val.add(moveout);
                     val.add(email);
                     func_issues.clear();
                     issues_resolved.clear();
