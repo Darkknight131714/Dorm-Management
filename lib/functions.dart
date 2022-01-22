@@ -57,6 +57,17 @@ class Functions {
           }
         }
       });
+      if (name == "") {
+        CollectionReference users = firestore.collection('warden');
+        await users.get().then((QuerySnapshot querySnapshot) {
+          for (var element in querySnapshot.docs) {
+            if (element["email"].toString() ==
+                auth.currentUser?.email.toString()) {
+              name = "HelloWorld";
+            }
+          }
+        });
+      }
     }
 
     return name;
@@ -212,10 +223,7 @@ class Functions {
       for (var documentSnapshot in querySnapshot.docs) {
         documentSnapshot.reference.update({
           "Name": studentinfo[0],
-          "Document": "Aadhar",
-          "Email": studentinfo[6],
-          "Movein": studentinfo[4],
-          "Moveout": studentinfo[5],
+          "Email": studentinfo[3],
           "Rollno": studentinfo[1],
           "Room": "${hostelname} ${room}",
         });
@@ -258,10 +266,7 @@ class Functions {
       for (var documentSnapshot in querySnapshot.docs) {
         documentSnapshot.reference.update({
           "Name": studentinfo[0],
-          "Document": "Aadhar",
-          "Email": studentinfo[6],
-          "Movein": studentinfo[4],
-          "Moveout": studentinfo[5],
+          "Email": studentinfo[3],
           "Rollno": studentinfo[1],
           "Room": "",
         });
@@ -565,5 +570,80 @@ class Functions {
         });
       });
     });
+  }
+
+  Future<List<List<dynamic>>> Wardenhostels(String hostel) async {
+    List<List<dynamic>> hostels = [];
+    print(hostel);
+    await firestore
+        .collection('hostels')
+        .where('title', isEqualTo: hostel)
+        .get()
+        .then((QuerySnapshot querySnapshot) async {
+      for (var element in querySnapshot.docs) {
+        //print(element["info"]);
+
+        DocumentReference docRef =
+            FirebaseFirestore.instance.doc(element["info"]);
+
+        //print(docRef.toString());
+
+        var a = await userData(docRef);
+
+        hostels.add(
+            [element["name"], a()["beds"], a()["available"], a()['title']]);
+      }
+    });
+    print(hostels);
+
+    return hostels;
+  }
+
+  Future<Map<String, List<String>>> Wardenstudentinfo(String hostel) async {
+    Map<String, List<String>> studentRecords = {};
+
+    CollectionReference students = firestore.collection('students');
+
+    await students.get().then((QuerySnapshot querySnapshot) {
+      for (var element in querySnapshot.docs) {
+        String room = "";
+        room = element['Room'];
+        if (room == "") {
+          continue;
+        } else if (room[0] + room[1] + room[2] == hostel) {
+          print(element["Name"]);
+          studentRecords[element["Rollno"].toString()] = [
+            element["Name"].toString(),
+            element["Rollno"].toString(),
+            element["Room"].toString(),
+            element["Email"].toString(),
+          ];
+        }
+      }
+    });
+
+    return studentRecords;
+  }
+
+  Future<List<List<dynamic>>> WardenPaymentinfo(String hostel) async {
+    CollectionReference students = firestore.collection('students');
+    List<List<dynamic>> ans = [];
+    int index = 0;
+    await students.get().then((QuerySnapshot querySnapshot) {
+      for (var element in querySnapshot.docs) {
+        String room = element["Room"];
+        if (room == "") {
+          continue;
+        } else if (room[0] + room[1] + room[2] == hostel) {
+          ans.add([]);
+          ans[index].add(element["Name"]);
+          ans[index].add(element["Rollno"]);
+          ans[index].add(element["hostelfee"]);
+          ans[index].add(element["otherfee"]);
+          index++;
+        }
+      }
+    });
+    return ans;
   }
 }

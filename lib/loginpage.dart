@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'admin_homepage.dart';
@@ -6,6 +7,9 @@ import 'package:dormitory_management/functions.dart';
 import 'userHomePage.dart';
 import 'register.dart';
 import 'constants.dart';
+import 'warden_homepage.dart';
+
+String hostell = "";
 
 class Loginpage extends StatefulWidget {
   const Loginpage({Key? key}) : super(key: key);
@@ -70,15 +74,40 @@ class _LoginpageState extends State<Loginpage> {
                     val.clear();
                     await func.profileinfo(email);
                     String name = await func.userpower();
-                    if (name != "") {
+                    if (name == "HelloWorld") {
+                      await FirebaseFirestore.instance
+                          .collection('warden')
+                          .where('email', isEqualTo: email)
+                          .get()
+                          .then((QuerySnapshot querySnapshot) {
+                        for (var element in querySnapshot.docs) {
+                          hostell = element['hostel'];
+                          print(element['hostel']);
+                        }
+                      });
+                      List<List<dynamic>> hostels =
+                          await func.Wardenhostels(hostell);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => WardenHomePage(
+                            name: name,
+                            hostels: hostels,
+                            title: hostell,
+                          ),
+                        ),
+                      );
+                    } else if (name != "") {
                       List<List<dynamic>> hostels = await func.hostels();
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Homepage(
-                                    name: name,
-                                    hostels: hostels,
-                                  )));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Homepage(
+                            name: name,
+                            hostels: hostels,
+                          ),
+                        ),
+                      );
                     } else {
                       await func.userIssue(val[1]);
                       Navigator.push(
