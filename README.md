@@ -4,7 +4,7 @@
 Team: Depression <br />
 Team Members: [Gautam](https://github.com/Darkknight131714), [Shantanu](https://github.com/underoot-iota), [Ambikesh](https://github.com/AmbikeshArman), [Shivansh](https://github.com/shivansh2741)
 
-#### <u>Problem Statement</u>
+#### <ins>Problem Statement</ins>
 [Android App Development: Hostel Management System](https://drive.google.com/file/d/1jsXJSSJldK6UWoy37u19vieMMOC6ZcoR/view?usp=sharing)
 
 ## Getting Started
