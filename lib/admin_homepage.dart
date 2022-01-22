@@ -5,8 +5,6 @@ import 'package:dormitory_management/student.dart';
 import 'package:dormitory_management/functions.dart';
 import 'add_room.dart';
 import 'report_retrieval.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
 import 'admin_issues.dart';
 import 'admin_payment.dart';
 import 'user_profile.dart';
