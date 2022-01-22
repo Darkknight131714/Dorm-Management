@@ -15,7 +15,8 @@ class _UserIssuePageState extends State<UserIssuePage> {
         title: Text("Your Issues"),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xFF3FC979),
+        elevation: 4,
+        backgroundColor: Color(0xFF1DA1F2),
         child: Icon(Icons.add),
         onPressed: () {
           String issue = "";
@@ -69,14 +70,14 @@ Widget issuecard(String issue, bool status, int number) {
     padding: const EdgeInsets.all(8.0),
     child: Container(
       decoration: BoxDecoration(
-          color: Color(0xFF3FC979).withOpacity(0.25),
-          borderRadius: BorderRadius.circular(20)),
+          color: Color(0xFF1DA1F2).withOpacity(0.25),
+          borderRadius: BorderRadius.circular(10)),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Issue no. : " + (number + 1).toString()),
+            Text("  Issue : " + (number + 1).toString(), style: TextStyle(color: Color(0xff545454),fontWeight: FontWeight.w600,fontSize: 18),),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -84,18 +85,18 @@ Widget issuecard(String issue, bool status, int number) {
                   Expanded(
                     flex: 2,
                     child: Text(
-                      issue,
+                      issue, style: TextStyle(color: Color(0xff545454),fontWeight: FontWeight.w600,fontSize: 16)
                     ),
                   ),
                   Expanded(
                       flex: 1,
                       child: status
                           ? const Text(
-                              "Resolved",
-                              style: TextStyle(color: Colors.green),
+                              "    Resolved",
+                              style: TextStyle(color: Colors.green, fontWeight: FontWeight.w600, fontSize: 18),
                             )
                           : const Text(
-                              "Not Resolved",
+                              "    Not Resolved",
                               style: TextStyle(color: Colors.red),
                             )),
                 ],

@@ -44,7 +44,7 @@ class _UserHomePageState extends State<UserHomePage> {
     Firebase.initializeApp();
     return Scaffold(
         bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: Color(0xFF3FC979),
+          selectedItemColor: Color(0xFF1DA1F2),
           type: BottomNavigationBarType.fixed,
           currentIndex: _index,
           onTap: (index) {
@@ -95,6 +95,7 @@ class FirstScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xff1DA1F2),
         actions: [
           IconButton(
               onPressed: () async {
@@ -103,7 +104,7 @@ class FirstScreen extends StatelessWidget {
               },
               icon: const Icon(Icons.logout))
         ],
-        title: Text("HomePage"),
+        title: Text("Home",style: TextStyle(color: Color(0xffffffff), fontSize: 18),),
       ),
       body: Center(
         child: Column(
@@ -123,7 +124,7 @@ class FirstScreen extends StatelessWidget {
                     }
                   }
                   if (isInHostel) {
-                    return TextButton(
+                    return ElevatedButton(
                       child: Text("Punch Out"),
                       onPressed: () async {
                         Functions func = Functions();
@@ -131,7 +132,7 @@ class FirstScreen extends StatelessWidget {
                       },
                     );
                   } else {
-                    return TextButton(
+                    return ElevatedButton(
                       onPressed: () async {
                         LocationPermission permission;
                         permission = await Geolocator.requestPermission();
@@ -143,11 +144,12 @@ class FirstScreen extends StatelessWidget {
                         if (dist > 300) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              backgroundColor: Colors.blueGrey,
+                              elevation: 0,
+                              backgroundColor: Color.fromRGBO(29, 161, 242, 0.4),
                               behavior: SnackBarBehavior.floating,
                               content: Text(
                                 "You are not near Hostel",
-                                style: TextStyle(color: Colors.red),
+                                style: TextStyle(color: Colors.white),
                               ),
                             ),
                           );
@@ -260,12 +262,12 @@ class FirstScreen extends StatelessWidget {
 Widget hostelCard(String title) {
   return Container(
     height: 50,
-    width: 350,
+    width: 300,
     margin: EdgeInsets.symmetric(vertical: 11),
     decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(30),
-      color: Color(0xFF3FC979).withOpacity(0.25),
+      borderRadius: BorderRadius.circular(10),
+      color: Color(0xFF1DA1F2).withOpacity(0.65),
     ),
-    child: Center(child: Text(title)),
+    child: Center(child: Text(title, style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600, fontSize: 16),),),
   );
 }
