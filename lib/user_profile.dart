@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'functions.dart';
+import 'user_payment.dart';
 
 class Profile extends StatelessWidget {
   @override
@@ -9,6 +10,19 @@ class Profile extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Profile"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UserPaymentPage(),
+                ),
+              );
+            },
+            icon: Icon(Icons.payment),
+          )
+        ],
       ),
       body: Column(
         mainAxisSize: MainAxisSize.min,

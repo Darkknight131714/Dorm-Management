@@ -26,7 +26,7 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   Functions functions = Functions();
 
-  List<String> titl = const ["bh1", "bh2", "bh3", "bh4", "bh5", "gh1", "gh2"];
+  List<String> titl = const ["bh1", "bh2", "gh1", "gh2"];
 
   Map<String, List<String>> studentRecords = {};
 

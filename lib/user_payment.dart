@@ -1,13 +1,16 @@
 import 'package:dormitory_management/success.dart';
 import 'package:flutter/material.dart';
 import 'functions.dart';
-import 'package:upi_pay/upi_pay.dart';
-import 'func_upipay.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'success.dart';
 import 'failure.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 int curr = -1;
 String status = "", name = "", address = "", number = "", buyid = "";
+
+late Razorpay _razorpay;
+final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
 class UserPaymentPage extends StatefulWidget {
   const UserPaymentPage({Key? key}) : super(key: key);
@@ -17,11 +20,121 @@ class UserPaymentPage extends StatefulWidget {
 }
 
 class _UserPaymentPageState extends State<UserPaymentPage> {
+  int flag = 0;
+  String hostel = payment[0] ? "Paid" : "Not Paid";
+  String other = payment[1] ? "Paid" : "Not Paid";
+  String hostelfee = "0", messfee = "0";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (hostel == 'Not Paid') {
+      hostelfee = "1000";
+    }
+    if (other == 'Not Paid') {
+      messfee = "1000";
+    }
+    _razorpay = Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _razorpay.clear();
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    print("SUCCESS: " + response.paymentId!);
+    if (flag == 1) {
+      setState(() {
+        payment[0] = true;
+        hostelfee = "0";
+        hostel = "Paid";
+      });
+      FirebaseFirestore.instance
+          .collection('students')
+          .where('Email', isEqualTo: val[3])
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        for (var element in querySnapshot.docs) {
+          element.reference.update({'hostelfee': true});
+        }
+      });
+    } else {
+      setState(() {
+        other = "Paid";
+        payment[1] = true;
+        messfee = "0";
+      });
+      FirebaseFirestore.instance
+          .collection('students')
+          .where('Email', isEqualTo: val[3])
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        for (var element in querySnapshot.docs) {
+          element.reference.update({'otherfee': true});
+        }
+      });
+    }
+    _scaffoldKey.currentState!.showSnackBar(
+      SnackBar(
+        content: Text("SUCCESS: " + response.paymentId!),
+      ),
+    );
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    print("ERROR: " + response.code.toString() + " - " + response.message!);
+    _scaffoldKey.currentState!.showSnackBar(
+      SnackBar(
+        content: Text(
+            "ERROR: " + response.code.toString() + " - " + response.message!),
+      ),
+    );
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    print(
+      "EXTERNAL WALLET: " + response.walletName!,
+    );
+    _scaffoldKey.currentState!.showSnackBar(
+      SnackBar(
+        content: Text(
+          "EXTERNAL WALLET: " + response.walletName!,
+        ),
+      ),
+    );
+  }
+
+  void openCheckout() async {
+    var options = {
+      'key': 'rzp_test_o4eo3gVWbgAyru',
+      'amount': 100000,
+      'name': 'Depri Corp.',
+      'description': 'My Shirt',
+      'retry': {'enabled': true, 'max_count': 1},
+      'send_sms_hash': true,
+      'prefill': {'contact': '', 'email': ''},
+      'external': {
+        'wallets': ['paytm']
+      }
+    };
+
+    try {
+      _razorpay.open(options);
+    } catch (e) {
+      debugPrint('Error: e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    String hostel = payment[0] ? "Paid" : "Not Paid";
-    String other = payment[1] ? "Paid" : "Not Paid";
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text("Payment Info"),
       ),
@@ -48,91 +161,14 @@ class _UserPaymentPageState extends State<UserPaymentPage> {
                         height: 10,
                       ),
                       Text("Fee : " + hostel),
-                      Text("Amount Due : 0.00"),
-                      Text("Due date : 22/09/2022"),
+                      Text("Amount Due : " + hostelfee),
                       SizedBox(height: 20),
                       ElevatedButton(
-                        onPressed: () async {
-                          final List<ApplicationMeta> appMetaList =
-                              await UpiPay.getInstalledUpiApplications(
-                                  statusType:
-                                      UpiApplicationDiscoveryAppStatusType.all);
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                              title: Text(
-                                  "UPIs: " + appMetaList.length.toString()),
-                              actions: [
-                                Container(
-                                  height: 300,
-                                  width: 300,
-                                  child: (appMetaList.length == 0)
-                                      ? Text("No UPI INSTALLED")
-                                      : ListView.builder(
-                                          itemCount: appMetaList.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return Container(
-                                              child: GestureDetector(
-                                                  onTap: () async {
-                                                    curr = index;
-                                                    await doUpiTransaction(
-                                                        appMetaList[curr]);
-                                                    if (status ==
-                                                        "UpiTransactionStatus.success") {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              SuccessScreen(),
-                                                        ),
-                                                      );
-                                                    } else if (status ==
-                                                        "UpiTransactionStatus.submitted") {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              SuccessScreen(),
-                                                        ),
-                                                      );
-                                                    } else {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              FailureScreen(),
-                                                        ),
-                                                      );
-                                                    }
-                                                  },
-                                                  child: Column(
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          appMetaList[index]
-                                                              .iconImage(48),
-                                                          SizedBox(
-                                                            width: 20,
-                                                          ),
-                                                          Text(appMetaList[
-                                                                  index]
-                                                              .upiApplication
-                                                              .appName
-                                                              .toString()),
-                                                        ],
-                                                      ),
-                                                      SizedBox(
-                                                        height: 30,
-                                                      ),
-                                                    ],
-                                                  )),
-                                            );
-                                          }),
-                                ),
-                              ],
-                            ),
-                          );
+                        onPressed: () {
+                          flag = 1;
+                          if (hostelfee != '0') {
+                            openCheckout();
+                          } else {}
                         },
                         child: Text("Pay Hostel Fee"),
                         style: ElevatedButton.styleFrom(
@@ -157,84 +193,21 @@ class _UserPaymentPageState extends State<UserPaymentPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Amenities",
+                        "Mess Fees",
                         style: TextStyle(fontSize: 20),
                       ),
                       SizedBox(
                         height: 10,
                       ),
                       Text("Fee : " + other),
-                      Text("Amount Due : 0.00"),
-                      Text("Due date : 22/09/2022"),
+                      Text("Amount Due : " + messfee),
                       SizedBox(height: 20),
                       ElevatedButton(
-                        onPressed: () async {
-                          final List<ApplicationMeta> appMetaList =
-                              await UpiPay.getInstalledUpiApplications(
-                                  statusType:
-                                      UpiApplicationDiscoveryAppStatusType.all);
-                          for (int i = 0; i < appMetaList.length; i++) {
-                            print(appMetaList[i].upiApplication);
-                          }
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                              title: Text(
-                                  "UPIs: " + appMetaList.length.toString()),
-                              actions: [
-                                Container(
-                                  height: 300,
-                                  width: 300,
-                                  child: (appMetaList.length == 0)
-                                      ? Text("No UPI INSTALLED")
-                                      : ListView.builder(
-                                          itemCount: appMetaList.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return Container(
-                                              child: GestureDetector(
-                                                  onTap: () async {
-                                                    curr = index;
-                                                    await doUpiTransaction(
-                                                        appMetaList[curr]);
-                                                    if (status ==
-                                                        "UpiTransactionStatus.success") {
-                                                      print("Hello");
-                                                    } else if (status ==
-                                                        "UpiTransactionStatus.submitted") {
-                                                      print("IDK");
-                                                    } else {
-                                                      print("some error:" +
-                                                          status);
-                                                    }
-                                                  },
-                                                  child: Column(
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          appMetaList[index]
-                                                              .iconImage(48),
-                                                          SizedBox(
-                                                            width: 20,
-                                                          ),
-                                                          Text(appMetaList[
-                                                                  index]
-                                                              .upiApplication
-                                                              .appName
-                                                              .toString()),
-                                                        ],
-                                                      ),
-                                                      SizedBox(
-                                                        height: 30,
-                                                      ),
-                                                    ],
-                                                  )),
-                                            );
-                                          }),
-                                ),
-                              ],
-                            ),
-                          );
+                        onPressed: () {
+                          flag = 2;
+                          if (messfee != '0') {
+                            openCheckout();
+                          } else {}
                         },
                         child: Text("Pay Other Fee"),
                         style: ElevatedButton.styleFrom(

@@ -24,7 +24,7 @@ dependencies:
   pdf: ^3.6.3
   path_provider: ^2.0.7
   open_file: ^3.2.1
-  upi_pay: ^1.0.1
+  razorpay_flutter: ^1.2.9
 
 dev_dependencies:
   flutter_test:

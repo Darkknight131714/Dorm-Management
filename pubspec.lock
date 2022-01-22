@@ -92,13 +92,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
-  decimal:
+  eventify:
     dependency: transitive
     description:
-      name: decimal
+      name: eventify
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.5.0"
+    version: "1.0.0"
   fake_async:
     dependency: transitive
     description:
@@ -184,6 +184,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  fluttertoast:
+    dependency: transitive
+    description:
+      name: fluttertoast
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "8.0.8"
   http_parser:
     dependency: transitive
     description:
@@ -345,13 +352,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0"
-  rational:
-    dependency: transitive
+  razorpay_flutter:
+    dependency: "direct main"
     description:
-      name: rational
+      name: razorpay_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.1"
+    version: "1.2.9"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -406,20 +413,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.0"
-  universal_io:
-    dependency: transitive
-    description:
-      name: universal_io
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.4"
-  upi_pay:
-    dependency: "direct main"
-    description:
-      name: upi_pay
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.1"
   vector_math:
     dependency: transitive
     description:
