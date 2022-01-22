@@ -192,60 +192,6 @@ class FirstScreen extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      roominfo = await func.roominfo("bh3");
-
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DormDetails(
-                            name: "BH3",
-                            roominfo: roominfo,
-                          ),
-                        ),
-                      );
-                    },
-                    child: Center(
-                      child: hostelCard("Boys Hostel 3"),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      roominfo = await func.roominfo("bh4");
-
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DormDetails(
-                            name: "BH4",
-                            roominfo: roominfo,
-                          ),
-                        ),
-                      );
-                    },
-                    child: Center(
-                      child: hostelCard("Boys Hostel 4"),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      roominfo = await func.roominfo("bh5");
-
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DormDetails(
-                            name: "BH5",
-                            roominfo: roominfo,
-                          ),
-                        ),
-                      );
-                    },
-                    child: Center(
-                      child: hostelCard("Boys Hostel 5"),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () async {
                       roominfo = await func.roominfo("gh1");
 
                       Navigator.push(
