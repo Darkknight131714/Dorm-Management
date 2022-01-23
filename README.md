@@ -14,3 +14,6 @@ Hostel Management System is an Android-based application, from which users can e
 
 ## Setting Up Project
 For help setting up the project, view the [online documentation](https://developer.android.com/studio/intro), which offers tutorials and guidance on setting up the Android Studio and running flutter projects.
+
+
+## [Project Presentation](https://docs.google.com/presentation/d/1jpCOazm9evDQQ7KcCcttwHoPv49AYcgrYGoRxHKqPZs/edit?usp=sharing)
