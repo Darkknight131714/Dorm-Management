@@ -234,7 +234,7 @@ class _HomepageState extends State<Homepage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Center(
-                                  child: Text(widget.hostels[index][0]),
+                                  child: Text(widget.hostels[index][0], style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                                 ),
                                 SizedBox(
                                   height: 50,
@@ -243,8 +243,8 @@ class _HomepageState extends State<Homepage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text("Beds : " + beds),
-                                      Text("available : " + available),
+                                      Text("Beds : " + beds, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                                      Text("Available : " + available, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
                                     ]),
                               ],
                             ),
