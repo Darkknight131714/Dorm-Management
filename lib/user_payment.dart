@@ -80,34 +80,27 @@ class _UserPaymentPageState extends State<UserPaymentPage> {
         }
       });
     }
-    _scaffoldKey.currentState!.showSnackBar(
-      SnackBar(
-        content: Text("SUCCESS: " + response.paymentId!),
-      ),
-    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("SUCCESS: " + response.paymentId!),
+    ));
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
     print("ERROR: " + response.code.toString() + " - " + response.message!);
-    _scaffoldKey.currentState!.showSnackBar(
-      SnackBar(
-        content: Text(
-            "ERROR: " + response.code.toString() + " - " + response.message!),
-      ),
-    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(
+          "ERROR: " + response.code.toString() + " - " + response.message!),
+    ));
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
     print(
       "EXTERNAL WALLET: " + response.walletName!,
     );
-    _scaffoldKey.currentState!.showSnackBar(
-      SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
-          "EXTERNAL WALLET: " + response.walletName!,
-        ),
-      ),
-    );
+      "EXTERNAL WALLET: " + response.walletName!,
+    )));
   }
 
   void openCheckout() async {
